@@ -92,15 +92,11 @@
 
             <?php 
     $total = 0;
-   foreach($_SESSION["carrinho"] as $key => $value)
-   {
 
-    $total++;    
-   }
-
-              echo "<a class='btn btn-success btn-sm ml-3' href='cart.html'>";
+    
+              echo "<a class='btn btn-success btn-sm ml-3' href='cart.php'>";
               echo "<i class='fa fa-shopping-cart'></i> Carrinho";
-              echo "<span class='badge badge-light'>{$total}</span>";
+              //echo "<span class='badge badge-light'>{$total}</span>";
               echo "</a>";
    
  ?>

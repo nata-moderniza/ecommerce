@@ -41,18 +41,18 @@ include_once "header.php";
 </style>
 
 <body class="text-center">
-  <form class="form-signin" id="form-login">
-    <h1 class=" h3 mb-3 font-weight-normal">Faça Login</h1>
+  <form class="form-signin" id="form-register">
+    <h1 class=" h3 mb-3 font-weight-normal">Faça o seu Cadastro</h1>
+    <label class="sr-only">Nome</label>
+    <input type="text" class="form-control mt-2" id="name" placeholder="Nome" name="name" autofocus>
     <label for="inputEmail" class="sr-only">Email</label>
-    <input type="email" class="form-control mt-2" id="input-email-login" placeholder="Email" name="email" autofocus>
+    <input type="email" class="form-control mt-2" id="email" placeholder="Email" name="email">
     <label for="inputPassword" class="sr-only">Senha</label>
-    <input type="password" id="input-senha-login" class="form-control mt-3" name="senha" placeholder="Senha">
-    <div class="checkbox mb-3">
-      <a href="register.php">
-        <label>
-          Registrar-se
-        </label>
-      </a>
+    <input type="password" id="senha" class="form-control mt-3" name="senha" placeholder="Senha">
+    <label for="inputPassword" class="sr-only">Confirmação de Senha</label>
+    <input type="password" id="confirmarsenha" class="form-control mt-3" name="confirmarsenha"
+      placeholder="Confirmação de Senha">
+    <label id="lbl-senha" class="text-danger"></label>
     </div>
     <button id="btn-login" class="btn btn-lg btn-primary btn-block" type="submit">Entrar</button>
 
@@ -82,13 +82,40 @@ include_once "header.php";
 
 <script type="text/JavaScript">
 
+  $('#senha').keyup((e) => {
+    if(e.target.value !== $('#confirmarsenha').val())
+    $("#lbl-senha").text("As senhas não coicidem");
+     else {
+      $("#lbl-senha").text("");
 
-  $('#form-login').submit(function(e)
+     }
+  })
+    
+  $('#confirmarsenha').keyup((e) => {
+    if(e.target.value !== $('#senha').val())
+    $("#lbl-senha").text("As senhas não coicidem");
+     else {
+      $("#lbl-senha").text("");
+
+     }
+  })
+
+  $('#form-register').submit(function(e)
  {
     e.preventDefault()
-    var email = $('#input-email-login').val();
-    var senha = $('#input-senha-login').val();
+    var nome  = $('#name').val();
+    var email = $('#email').val();
+    var senha = $('#senha').val();
+    var confirmasenha = $('#confirmarsenha').val();
     
+    
+    if(!nome)
+    {
+        $("#modal-text").text("Informe o Nome");
+        $("#modal-login").modal()
+        return 
+    }
+
     if(!email)
     {
         $("#modal-text").text("Informe o E-mail");
@@ -96,17 +123,24 @@ include_once "header.php";
         return 
     }
 
-    if(!senha)
+    if(!senha || !confirmasenha)
     {
         $("#modal-text").text("Informe a Senha");
         $("#modal-login").modal()
         return
     }
 
+    if(senha !== confirmasenha)
+    {
+        $("#modal-text").text("As senhas não são iguais.");
+        $("#modal-login").modal()
+        return
+    }
+
     $.ajax({
-        url: 'http://localhost/ecommerce/handleLogin.php',
-        method: 'POST',
-        data: {email: email, senha:senha},
+        url: 'http://localhost/ecommerce/handleUser.php',
+        method: 'GET',
+        data: {id: 0, name:nome, email: email, role: "user",password: senha },
         dataType: 'json',
         success: function (data) {
           if (data.code == 200){

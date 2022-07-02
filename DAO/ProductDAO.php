@@ -6,5 +6,6 @@ interface ProductDao
   public function getProducts();
   public function getById($idProduct);
   public function updateById($product);
+  public function getProductsLoop($name);
 
 }

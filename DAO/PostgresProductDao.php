@@ -97,4 +97,35 @@ class PostgresProductDao extends PostgresDAO implements ProductDAO
 
     return false;
   }
+
+  public function getProductsLoop($name)
+  {
+    $products = array();
+
+    $query = "SELECT product.id_product, product.name, product.description,  product.path_imagem, provider.id_provider, provider.name as NameProvider, ps.quantity, ps.price FROM
+              " . $this->table_name . " INNER JOIN provider on provider.id_provider = product.id_provider" .
+      " LEFT JOIN product_stock as ps on product.id_product = ps.id_product" .
+      " WHERE product.is_deleted = false ";
+
+      if(isset($name) && $name != '')
+      {
+        $query = $query. "AND product.name like(%:name_product%) ";
+      }
+
+      $query = $query. "ORDER BY product.id_product ASC";
+
+    $stmt = $this->conn->prepare($query);
+    if(isset($name) && $name != '')
+    $stmt->bindValue(':name_product', $name);  
+
+    $stmt->execute();
+
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+      extract($row);
+      $products[] = $row;
+    }
+
+    return $products;
+  }
+
 }
