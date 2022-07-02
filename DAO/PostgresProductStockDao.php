@@ -71,5 +71,25 @@ class PostgresProductStockDao extends PostgresDAO implements ProductStockDao
 
     return false;
   }
+
+  public function getByProductId($idProduct)
+  {
+    $product = null;
+
+    $query = "SELECT product_stock.id_product, product_stock.quantity FROM
+    " . $this->table_name . " WHERE id_product = :id_product";
+
+    $stmt = $this->conn->prepare($query);
+    $stmt->bindValue(':id_product', $idProduct);
+    $stmt->execute();
+
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($row) {
+      $product = $row;
+    }
+
+    return $product;
+  }
   
 }

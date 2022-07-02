@@ -1,41 +1,54 @@
 <?php
 include_once "interface.php";
 
-$id = @$_GET["id"];
-$name = @$_GET["name"];
-$description = @$_GET["description"];
-$provider = @$_GET["provider"];
-$price  = @$_GET["price"];
-$stock = @$_GET["stock"];
-$imagem = @$_GET["imagem"];
+// Inicia sessão 
+session_start();
 
-$product= new Product($id, $name, $description, $provider, $imagem);
+$id_order = $_POST["id_pedido"];
+$street = $_POST["endereco"];
+$cep = $_POST["cep"];
+$name_user = $_POST["nome"];
+$id_user = $_SESSION["id_usuario"];
+$itens = $_SESSION["carrinho"];
 
-$dao = $factory->getProductDao();
+$order = new Order(0, $id_user, "Natã", "RUA A", "95043200", "1");
 
-if(intval($id) == 0)
-{
-    $idProdutct = $dao->Create($product);
 
-    if($idProdutct)
+$dao = $factory->getOrderDao();
+$daoItem = $factory->getOrderItemDao();
+$daoStock = $factory->getProductStockDao();
+
+$createOrder = $dao->Create($order);
+
+    if($createOrder)
     {
-        $daoStock = $factory->getProductStockDao();
-        $stockModel = new ProductStock($idProdutct, $stock, $price);
-        $daoStock->create($stockModel);
+      
+       foreach($_SESSION["carrinho"] as $key => $value)
+       {
+         $item = new OrderItem($createOrder, $key, $value["quantidade"], $value["preco"],
+         $value["quantidade"] * $value["preco"]); 
+            
+         // Se criar baixa o estoque 
+         if($daoItem->Create($item))
+         {
+            $stock = $daoStock->getByProductId($key);
+            
+            if($stock)
+            {
+                var_dump($stock);
+
+                $quantidadeAtual = $stock["quantity"] -  $value["quantidade"];
+
+                $stockModel = new ProductStock($key , $quantidadeAtual, $value["preco"]);
+                $daoStock->updateByProduct($stockModel);
+            }
+            
+         }     
+       }
+          
+       if(isset($_SESSION["carrinho"])) {
+        unset($_SESSION["carrinho"]);
     }
-
-}
-else
- {
-  $dao->UpdateById($product);
-
-  $daoStock = $factory->getProductStockDao();
-  $stockModel = new ProductStock($id , $stock, $price);
-  $daoStock->updateByProduct($stockModel);
-
-}
-
-header("Location: products.php");
-exit;
+    }
 
 ?>

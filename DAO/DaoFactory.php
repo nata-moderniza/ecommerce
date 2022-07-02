@@ -12,5 +12,8 @@ abstract class DaoFactory
 
   public abstract function getProductStockDao();
 
+  public abstract function getOrderDao();
+
+  public abstract function getOrderItemDao();
 
 }

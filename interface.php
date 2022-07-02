@@ -5,12 +5,15 @@ include_once('Model/Usuario.php');
 include_once('Model/Provider.php');
 include_once('Model/Product.php');
 include_once('Model/ProductStock.php');
-
+include_once('Model/Order.php');
+include_once('Model/OrderItem.php');
 
 include_once('DAO/ProviderDAO.php');
 include_once('DAO/UsuarioDAO.php');
 include_once('DAO/ProductDAO.php');
 include_once('DAO/ProductStockDAO.php');
+include_once('DAO/OrderDAO.php');
+include_once('DAO/OrderItemDAO.php');
 
 include_once('DAO/DaoFactory.php');
 

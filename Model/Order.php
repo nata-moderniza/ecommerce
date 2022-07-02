@@ -13,12 +13,12 @@ class Order
   public function __construct($Id_Order, $Id_User, $Name_User,$Street,$Zipcode,$Situation)
   {   
 
-    this->Id_Order = $Id_Order;
-    this->Id_User = $Id_User;
-    this->Name_User = $Name_User;
-    this->Street= $Street;
-    this->Zipcode = $Zipcode;
-    this->Situation = $Situation;
+    $this->Id_Order = $Id_Order;
+    $this->Id_User = $Id_User;
+    $this->Name_User = $Name_User;
+    $this->Street= $Street;
+    $this->Zipcode = $Zipcode;
+    $this->Situation = $Situation;
 
   }
   
@@ -44,7 +44,7 @@ class Order
   {
     return $this->Name_User;
   }
-  public function setId_User($name)
+  public function setName_User($name)
   {
     $this->Name_User = $name;
   }

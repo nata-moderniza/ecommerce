@@ -20,9 +20,13 @@ include_once "interface.php";
         echo "<ul class='list-group mb-3'>";
         
         $total = 0;
-   
+      
+        if(isset($_SESSION["carrinho"]))
+        {
+
+        
    foreach($_SESSION["carrinho"] as $key => $value)
-   {
+      {     
             $total += $value["quantidade"] * $value["preco"]; 
             echo "<li class='list-group-item d-flex justify-content-between lh-condensed'>";
             echo "<div>";
@@ -31,13 +35,13 @@ include_once "interface.php";
             echo "</div>";
             echo "<span class='text-muted'>R$ {$value["preco"]} </span>";
             echo "</li>";
-   }
+      }
 
           echo "<li class='list-group-item d-flex justify-content-between'>";
           echo "<span>Total R$</span>";
           echo "<strong>R$ {$total}</strong>";
           echo "</li>";
-  
+        }
  ?>
 
         </ul>
@@ -88,7 +92,7 @@ include_once "interface.php";
             <div class="col-md-6 mb-3">
               <label for="cc-name">Nome no Cartão</label>
               <input type="text" class="form-control" id="cc-name" placeholder="">
-              <small class="text-muted">Full name as displayed on card</small>
+              <small class="text-muted">Nome escrito no cartão</small>
             </div>
             <div class="col-md-6 mb-3">
               <label for="cc-number">Número Cartão</label>
@@ -106,7 +110,13 @@ include_once "interface.php";
             </div>
           </div>
           <hr class="mb-4">
-          <button class="btn btn-primary btn-lg btn-block" type="submit">Finalizar</button>
+          <?php 
+         
+         if(isset($_SESSION["carrinho"]))
+         {
+            echo "<button class='btn btn-primary btn-lg btn-block' type='submit'>Finalizar</button>";
+         }
+         ?>
         </form>
       </div>
     </div>
@@ -143,54 +153,71 @@ include_once "interface.php";
     var email = $('#email').val();
     var address = $('#address').val(); 
     var zipcode = $('#zip').val();
+    var ccname = $('#cc-name').val();
+    var ccnumber = $('#cc-name').val();
+    var ccexpiration = $('#cc-expiration').val();
+    var cccvv = $('#cc-cvv').val();
+
+    // if(!name)
+    // {
+    //     $("#modal-text").text("Informe o Nome");
+    //     $("#modal-login").modal()
+    //     return 
+    // }
+
+    // if(!email)
+    // {
+    //     $("#modal-text").text("Informe o E-mail");
+    //     $("#modal-login").modal()
+    //     return 
+    // }
+
+    // if(!address)
+    // {
+    //     $("#modal-text").text("Informe o Endereço");
+    //     $("#modal-login").modal()
+    //     return 
+    // }
     
+    // if(!zipcode)
+    // {
+    //     $("#modal-text").text("Informe o CEP");
+    //     $("#modal-login").modal()
+    //     return 
+    // }
 
-    if(!name)
-    {
-        $("#modal-text").text("Informe o Nome");
-        $("#modal-login").modal()
-        return 
+    // if(!ccname || !ccexpiration || !cccvv || ccnumber)
+    // {
+    //   $("#modal-text").text("Preencha todos os campos do pagamento.");
+    //     $("#modal-login").modal()
+    //     return 
+    // }
+
+    const payload = {
+      id_pedido: 0,
+      endereco: address,
+      cep: zipcode,
+      nome: name,
     }
 
-    if(!email)
-    {
-        $("#modal-text").text("Informe o E-mail");
-        $("#modal-login").modal()
-        return 
-    }
-
-    if(!address)
-    {
-        $("#modal-text").text("Informe o Endereço");
-        $("#modal-login").modal()
-        return 
-    }
-    
-    if(!zipcode)
-    {
-        $("#modal-text").text("Informe o CEP");
-        $("#modal-login").modal()
-        return 
-    }
-
-    // $.ajax({
-    //     url: 'http://localhost/ecommerce/handleLogin.php',
-    //     method: 'POST',
-    //     data: {email: email, senha:senha},
-    //     dataType: 'json',
-    //     success: function (data) {
-    //       if (data.code == 200){
-    //     alert("Success: " +data.msg);
-    //     //ou uma forma de ver todo conteúdo do retorno é
-    //     console.log(data);
-    //     //ou apenas o conteúdo do elemento msg
-    //     console.log(data.msg);
-    // } 
-    //     },
-    //     error: function (response) {
-    //       console.log("response",response) 
-    //    }
-    // })
+    $.ajax({
+        url: 'http://localhost/ecommerce/handleOrder.php',
+        method: 'POST',
+        data: payload,
+        dataType: 'json',
+        success: function (data) {
+          if (data.code == 200){
+        alert("Success: " +data.msg);
+        //ou uma forma de ver todo conteúdo do retorno é
+        console.log(data);
+        //ou apenas o conteúdo do elemento msg
+        console.log(data.msg);
+    } 
+        },
+        error: function (response) {
+          console.log("response",response) 
+       }
+    })
  })   
 
   
