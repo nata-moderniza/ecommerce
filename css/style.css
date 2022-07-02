@@ -1,0 +1,10 @@
+.top-admin-menu
+{
+    display: flex;
+    flex-direction: row;
+}
+
+.top-admin-menu-item
+{
+padding: 0px 3px 0px
+}
