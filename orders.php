@@ -130,14 +130,20 @@ include_once "checkPermission.php"
 
           $('#tabela-pedidos').empty();
 
+          var payload = null
+
+          if (nome || id) {
+            payload = {
+              name_order: nome,
+              id_order: id
+            }
+          }
+
           $.ajax({
             url: 'http://localhost/ecommerce/getOrder.php',
             method: 'POST',
             dataType: 'json',
-            data: {
-              name_order: nome,
-              id_order: id
-            },
+            data: payload,
             success: function(response) {
               if (response.length > 0)
                 response.forEach((item) => mountTable(item));

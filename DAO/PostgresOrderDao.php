@@ -42,14 +42,30 @@ class PostgresOrderDao extends PostgresDAO implements OrderDao
 	  INNER JOIN users on users.id = orders.id_user 
 	  INNER JOIN order_item  on order_item.id_order = orders.id_order";
     
+     $needAnd= false;
+
+      if(isset($name) || isset($id_order))
+      {
+        $query = $query. " WHERE ";   
+      }
+
       if(isset($name) && $name != '')
       {
-        $query = $query. " AND rders.name_user like(%:orders.name_user%) ";
+        $query = $query. " orders.name_user like '%". $name. "%' ";
+        $needAnd = true;
       }
    
       if(isset($id_order) && $id_order)
       {
-        $query = $query. " AND orders.id_order = :id_order ";
+        if($needAnd)
+        {
+          $query = $query. " AND orders.id_order = :id_order ";
+
+        }
+        else{
+          $query = $query. " orders.id_order = :id_order ";
+
+        }
       }
 
     $query = $query . " group by  orders.id_order, orders.name_user, orders.street, 
@@ -57,12 +73,11 @@ class PostgresOrderDao extends PostgresDAO implements OrderDao
 
     $stmt = $this->conn->prepare($query);
     
-    if(isset($name) && $name != '')
-    $stmt->bindValue(':name_user', $name);  
 
     if(isset($id_order) && $id_order)
-    $stmt->bindValue(':id_order', $id_order);  
+     $stmt->bindValue(':id_order', $id_order);  
 
+ 
     $stmt->execute();
 
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -105,7 +120,7 @@ class PostgresOrderDao extends PostgresDAO implements OrderDao
     sum(order_item.price_total) as price_total FROM orders 
 	  INNER JOIN users on users.id = orders.id_user 
 	  INNER JOIN order_item  on order_item.id_order = orders.id_order
-    WHERE orders.name_user like(%:name_user%) 
+    WHERE orders.name_user like('%:name_user%') 
     group by  orders.id_order, orders.name_user, orders.street, 
     orders.zipcode, orders.situation, users.name";
 

@@ -1,19 +1,72 @@
 <?php
-header('Access-Control-Allow-Origin: *');
-header('Content-type: application/json');
 
-date_default_timezone_set("America/Sao_Paulo");
+require "interface.php"; 
 
-if (isset($_GET['path'])) {
-$path = explode("/", $_GET['path']);
-} else {
-echo "Caminho não existe"; exit;
-}
 
-if (isset($path[0])) { $api = $path[0]; } else { "Caminho não existe"; exit; }
-if (isset($path[1])) { $acao = $path[1]; } else { $acao = ''; }
-if (isset($path[2])) { $param = $path[2]; } else { $param = ''; }
+$request_method=$_SERVER["REQUEST_METHOD"];
+	
+switch($request_method)
+ {
+ case 'GET':
+  
+      // Busca todos os pedidos
+      if(!empty($_GET["id"]))
+      {
+          $id=intval($_GET["id"]);
+  
+          $dao = $factory->getOrderDao();
+          $orders = $dao->getOrders(null, $id);
 
-$method = $_SERVER['REQUEST_METHOD'];
+          if(count($orders) > 0)
+          {
+            echo json_encode($orders);
+            http_response_code(200); 
+          }
+          else{
+            
+            echo json_encode(array("Mensagem"=> "Nenhum pedido encontrado."));
+            http_response_code(200); 
+          }
+      }
+      else if (!empty($_GET["name"]))
+      {
 
-?>
+        $name= $_GET["name"];
+        
+        $dao = $factory->getOrderDao();
+        $orders = $dao->getOrders($name, null);
+
+        if(count($orders) > 0)
+        {
+          echo json_encode($orders);
+          http_response_code(200); 
+        }
+        else{
+          
+          echo json_encode(array("Mensagem"=> "Nenhum pedido encontrado."));
+          http_response_code(200); 
+        }
+      }
+      else
+      {
+        $dao = $factory->getOrderDao();
+        $orders = $dao->getOrders(null, null);
+
+        if(count($orders) > 0)
+        {
+          echo json_encode($orders);
+          http_response_code(200); 
+        }
+        else{
+          
+          echo json_encode(array("Mensagem"=> "Nenhum pedido encontrado."));
+          http_response_code(200); 
+        }
+      }  
+
+    break;
+ default:
+    // Invalid Request Method
+    http_response_code(405); // 405 Method Not Allowed
+    break;
+ }
