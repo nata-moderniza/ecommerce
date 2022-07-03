@@ -108,17 +108,11 @@ include_once "header.php";
         method: 'POST',
         data: {email: email, senha:senha},
         dataType: 'json',
-        success: function (data) {
-          if (data.code == 200){
-        alert("Success: " +data.msg);
-        //ou uma forma de ver todo conteúdo do retorno é
-        console.log(data);
-        //ou apenas o conteúdo do elemento msg
-        console.log(data.msg);
-    } 
+        success: function (data) { 
+          window.location.href = "http://localhost/ecommerce/index.php";
         },
         error: function (response) {
-          console.log("response",response) 
+          window.location.href = "http://localhost/ecommerce/index.php";
        }
     })
  })   

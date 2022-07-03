@@ -56,6 +56,9 @@
                     echo "<li class='top-admin-menu-item'>";
                     echo "<a href='users.php'>Usuários</a>";
                     echo "</li>";
+                    echo "<li class='top-admin-menu-item'>";
+                    echo "<a href='orders.php'>Pedidos</a>";
+                    echo "</li>";
                 }
 
             }
