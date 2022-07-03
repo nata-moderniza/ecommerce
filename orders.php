@@ -53,21 +53,40 @@ include_once "checkPermission.php"
     </div>
 
     <div id="orderDetails" class="container mt-5 p-3 rounded cart">
+      <div style="cursor: pointer;" onClick=showTable() class="d-flex flex-row align-items-center pointer"><i
+          class="fa fa-long-arrow-left"></i><span class="ml-2">Voltar</span></div>
+      <div class="row">
+        <div class="col-md-6">
+          <h4 id="numeroPedido"> Pedido : #</h4>
+          <div class="billed"><span class="font-weight-bold">Cliente:</span>
+            <span id="clientePedido"> class="ml-1">Jasper Kendrick</span>
+          </div>
+          <div class="billed"><span class="font-weight-bold">Endereço:</span>
+            <span id="enderecoPedido">class="ml-1">May 13, 2020</span>
+          </div>
+          <div class="billed"><span class="font-weight-bold">Total</span>
+            <span id="totalPedido" class="ml-1"></span>
+          </div>
+        </div>
+      </div>
       <div class="row no-gutters">
         <div class="col-md-12">
           <div class="product-details mr-2">
-            <div class="d-flex flex-row align-items-center"><i class="fa fa-long-arrow-left"></i><span
-                class="ml-2">Voltar</span></div>
             <hr>
             <div class="d-flex justify-content-between"><span>Itens do Pedido</span>
             </div>
             <div id="itens-pedido">
-
             </div>
           </div>
         </div>
 
         <script>
+        const showTable = () => {
+
+          $('#tabela').show();
+          $('#orderDetails').hide();
+        }
+
         $(document).ready(function() {
           $('#orderDetails').hide();
           $.ajax({
@@ -87,17 +106,18 @@ include_once "checkPermission.php"
         });
 
         function mountTable(item) {
-          var newRow = $(`<tr>`);
+          var newRow = $(`<tr id="teste">`);
           var cols = "";
-
           cols += `<td>${item.id_order}</td>`;
           cols += `<td>${item.nome_cliente}</td>`;
           cols += `<td>${item.street}</td>`;
           cols += `<td>${item.zipcode}</td>`;
           cols += `<td>${item.situation}</td>`;
-          cols += `<td>${item.price_total}</td>`;
+          cols += `<td>R$ ${item.price_total}</td>`;
           cols +=
-            `<td><a onClick=viewDetails(${item.id_order}) class='text-primary'><i class='fa fa-fw fa-edit'></i> Detalhes</a></td>`;
+            `<td><a style="cursor: pointer;" 
+            onClick=viewDetails(${item.id_order})
+             class='text-primary'><i class='fa fa-fw fa-edit'></i> Detalhes</a></td>`;
 
 
           newRow.append(cols);
@@ -132,6 +152,9 @@ include_once "checkPermission.php"
         function viewDetails(idPedido) {
           $('#tabela').hide();
           $('#orderDetails').show();
+          $('#itens-pedido').empty();
+
+          $("#numeroPedido").html(`Pedido: #${idPedido}`)
 
           $.ajax({
             url: 'http://localhost/ecommerce/getItensOrder.php',
@@ -142,8 +165,11 @@ include_once "checkPermission.php"
             },
             success: function(response) {
               if (response.length > 0) {
+                var total = 0
                 response.forEach((item) => {
-                  console.log("item", item)
+
+                  total = parseFloat(total) + parseFloat(item.price_total)
+
                   $("#itens-pedido").append(`
                   <div class="d-flex justify-content-between align-items-center mt-3 p-2 items rounded">
                 <div class="d-flex flex-row"><img class="rounded" src="http://localhost/ecommerce${item.path_imagem}" width="40">
@@ -153,10 +179,12 @@ include_once "checkPermission.php"
                     class="d-block ml-5 font-weight-bold">R$ ${item.price_total}</span>
                 </div>
               </div>
+              <hr>
                   `);
                 })
-
-
+                $("#clientePedido").html(`${response[0].name_user}`)
+                $("#enderecoPedido").html(`${response[0].street}`)
+                $("#totalPedido").html(`R$ ${total}`)
               }
 
             },

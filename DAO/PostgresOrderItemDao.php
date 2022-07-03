@@ -37,9 +37,11 @@ class PostgresOrderItemDao extends PostgresDAO implements OrderItemDAO
   {
     $ordersItem = array();
 
-    $query = "select order_item.id_product, product.name, order_item.quantity,
+    $query = "select order_item.id_order, orders.name_user, orders.street, order_item.id_product, product.name, order_item.quantity,
     order_item.price_unit, order_item.price_total, product.path_imagem from order_item
-    INNER JOIN product on product.id_product = order_item.id_product where order_item.id_order = :id_order";
+    INNER JOIN product on product.id_product = order_item.id_product
+    INNER JOIN orders on orders.id_order = order_item.id_order 
+    where order_item.id_order = :id_order";
 
     $stmt = $this->conn->prepare($query);
     $stmt->bindValue(":id_order", $orderId);
