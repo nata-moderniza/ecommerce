@@ -51,7 +51,7 @@ include_once "interface.php";
         <h4 class="mb-3">Faturamento</h4>
         <form id="form-checkout">
           <div class="row">
-            <div class="col-md-6 mb-3">
+            <div class="col-md-12">
               <label for="firstName">Nome</label>
               <input type="text" class="form-control" id="name" placeholder="" value="">
             </div>
@@ -59,7 +59,7 @@ include_once "interface.php";
 
           <div class="mb-3">
             <label for="email">Email</label>
-            <input type="email" class="form-control" id="email" placeholder="you@example.com">
+            <input type="email" class="form-control" id="email">
           </div>
 
           <div class="mb-3">
@@ -154,44 +154,44 @@ include_once "interface.php";
     var address = $('#address').val(); 
     var zipcode = $('#zip').val();
     var ccname = $('#cc-name').val();
-    var ccnumber = $('#cc-name').val();
+    var ccnumber = $('#cc-number').val();
     var ccexpiration = $('#cc-expiration').val();
     var cccvv = $('#cc-cvv').val();
 
-    // if(!name)
-    // {
-    //     $("#modal-text").text("Informe o Nome");
-    //     $("#modal-login").modal()
-    //     return 
-    // }
+    if(!name)
+    {
+        $("#modal-text").text("Informe o Nome");
+        $("#modal-login").modal()
+        return 
+    }
 
-    // if(!email)
-    // {
-    //     $("#modal-text").text("Informe o E-mail");
-    //     $("#modal-login").modal()
-    //     return 
-    // }
+    if(!email)
+    {
+        $("#modal-text").text("Informe o E-mail");
+        $("#modal-login").modal()
+        return 
+    }
 
-    // if(!address)
-    // {
-    //     $("#modal-text").text("Informe o Endereço");
-    //     $("#modal-login").modal()
-    //     return 
-    // }
+    if(!address)
+    {
+        $("#modal-text").text("Informe o Endereço");
+        $("#modal-login").modal()
+        return 
+    }
     
-    // if(!zipcode)
-    // {
-    //     $("#modal-text").text("Informe o CEP");
-    //     $("#modal-login").modal()
-    //     return 
-    // }
+    if(!zipcode)
+    {
+        $("#modal-text").text("Informe o CEP");
+        $("#modal-login").modal()
+        return 
+    }
 
-    // if(!ccname || !ccexpiration || !cccvv || ccnumber)
-    // {
-    //   $("#modal-text").text("Preencha todos os campos do pagamento.");
-    //     $("#modal-login").modal()
-    //     return 
-    // }
+    if(!ccname || !ccexpiration || !cccvv || !ccnumber)
+    {
+      $("#modal-text").text("Preencha todos os campos do pagamento.");
+        $("#modal-login").modal()
+        return 
+    }
 
     const payload = {
       id_pedido: 0,

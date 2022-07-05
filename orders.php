@@ -2,7 +2,6 @@
 include_once "header.php";
 include_once "checkLogin.php";
 include_once "interface.php";
-include_once "checkPermission.php"
 ?>
 <section>
 
@@ -94,8 +93,8 @@ include_once "checkPermission.php"
             method: 'POST',
             dataType: 'json',
             success: function(response) {
-              if (response.length)
-                response.forEach((item) => mountTable(item));
+              if (response.pedidos.length)
+                response.pedidos.forEach((item) => mountTable(item, response.role));
             },
             error: function(response) {
               console.log("responseerror", response)
@@ -105,7 +104,8 @@ include_once "checkPermission.php"
 
         });
 
-        function mountTable(item) {
+        function mountTable(item, role) {
+          console.log("role", role)
           var newRow = $(`<tr id="teste">`);
           var cols = "";
           cols += `<td>${item.id_order}</td>`;
@@ -117,7 +117,13 @@ include_once "checkPermission.php"
           cols +=
             `<td><a style="cursor: pointer;" 
             onClick=viewDetails(${item.id_order})
-             class='text-primary'><i class='fa fa-fw fa-edit'></i> Detalhes</a></td>`;
+             class='text-primary'><i class='fa fa-fw fa-edit'></i> Detalhes</a>
+             <a href='handleDeleteProvider.php?id={$product['id_product']}}' class='text-danger' >
+             <i class='fa fa-fw fa-trash'></i> Cancelar</a>
+             <a href='handleDeleteProvider.php?id={$product['id_product']}}' class='text-danger' >
+             <i class='fa fa-fw fa-trash'></i> Entregar</a>
+
+             </td>`;
 
 
           newRow.append(cols);
@@ -145,8 +151,8 @@ include_once "checkPermission.php"
             dataType: 'json',
             data: payload,
             success: function(response) {
-              if (response.length > 0)
-                response.forEach((item) => mountTable(item));
+              if (response.pedidos.length)
+                response.pedidos.forEach((item) => mountTable(item, response.role));
             },
             error: function(response) {
               console.log("responseerror", response)

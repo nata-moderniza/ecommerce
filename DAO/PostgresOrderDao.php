@@ -32,7 +32,7 @@ class PostgresOrderDao extends PostgresDAO implements OrderDao
     }
   }
 
-  public function GetOrders($name, $id_order)
+  public function GetOrders($name, $id_order, $id_user)
   {
     $orders = array();
 
@@ -44,7 +44,7 @@ class PostgresOrderDao extends PostgresDAO implements OrderDao
     
      $needAnd= false;
 
-      if(isset($name) || isset($id_order))
+      if(isset($name) || isset($id_order) || is_int($id_user))
       {
         $query = $query. " WHERE ";   
       }
@@ -68,6 +68,19 @@ class PostgresOrderDao extends PostgresDAO implements OrderDao
         }
       }
 
+      if(is_int($id_user))
+      {
+        if($needAnd)
+        {
+          $query = $query. " AND orders.id_user = :id_user ";
+
+        }
+        else{
+          $query = $query. " orders.id_user = :id_user ";
+
+        }
+      }
+
     $query = $query . " group by  orders.id_order, orders.name_user, orders.street, 
     orders.zipcode, orders.situation, users.name ";
 
@@ -77,7 +90,9 @@ class PostgresOrderDao extends PostgresDAO implements OrderDao
     if(isset($id_order) && $id_order)
      $stmt->bindValue(':id_order', $id_order);  
 
- 
+     if(is_int($id_user))
+     $stmt->bindValue(':id_user', $id_user); 
+   
     $stmt->execute();
 
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
