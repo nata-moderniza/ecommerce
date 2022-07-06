@@ -15,7 +15,7 @@ switch($request_method)
           $id=intval($_GET["id"]);
   
           $dao = $factory->getOrderDao();
-          $orders = $dao->getOrders(null, $id);
+          $orders = $dao->getOrders(null, $id, null);
 
           if(count($orders) > 0)
           {
@@ -34,7 +34,7 @@ switch($request_method)
         $name= $_GET["name"];
         
         $dao = $factory->getOrderDao();
-        $orders = $dao->getOrders($name, null);
+        $orders = $dao->getOrders($name, null,null);
 
         if(count($orders) > 0)
         {
@@ -50,7 +50,7 @@ switch($request_method)
       else
       {
         $dao = $factory->getOrderDao();
-        $orders = $dao->getOrders(null, null);
+        $orders = $dao->getOrders(null, null,null);
 
         if(count($orders) > 0)
         {
