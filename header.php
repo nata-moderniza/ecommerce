@@ -86,9 +86,9 @@
 
           <form class="form-inline my-2 my-lg-0">
             <div class="input-group input-group-sm">
-              <input type="text" class="form-control" placeholder="Search...">
+              <input id="text-filter-produto" type="text" class="form-control" placeholder="Pesquisar">
               <div class="input-group-append">
-                <button type="button" class="btn btn-secondary btn-number">
+                <button onClick=searchProduct() type="button" class="btn btn-secondary btn-number">
                   <i class="fa fa-search"></i>
                 </button>
               </div>
@@ -128,5 +128,20 @@
         </div>
       </div>
     </nav>
+
+
+    <script>
+    function searchProduct() {
+
+      var pesquisa = $("#text-filter-produto").val();
+
+      if (pesquisa)
+        window.location.href = `http://localhost/ecommerce/loopProducts.php?name=${pesquisa}`;
+      else
+        window.location.href = `http://localhost/ecommerce/loopProducts.php`;
+
+
+    }
+    </script>
 
   </header>

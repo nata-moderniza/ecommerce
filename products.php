@@ -6,10 +6,10 @@ include_once "checkPermission.php"
 ?>
 <section>
 
-    <div class="container mt-3">
-        <div class="">
-            <h5 class="card-title"> Produtos</h5>
-            <form method="get">
+  <div class="container mt-3">
+    <div class="">
+      <h5 class="card-title"> Produtos</h5>
+      <!-- <form method="get">
                 <div class="row">
                     <div class="col-sm-4">
                         <div class="form-group">
@@ -32,10 +32,10 @@ include_once "checkPermission.php"
                         </div>
                     </div>
                 </div>
-            </form>
-        </div>
+            </form> -->
+    </div>
 
-        <?php
+    <?php
 
         $dao = $factory->getProductDao();
         $products = $dao->getProducts();
@@ -80,7 +80,7 @@ include_once "checkPermission.php"
 
 
         ?>
-    </div>
+  </div>
 
 </section>
 <?php

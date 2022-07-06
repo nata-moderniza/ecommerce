@@ -11,7 +11,7 @@ $name_user = $_POST["nome"];
 $id_user = $_SESSION["id_usuario"];
 $itens = $_SESSION["carrinho"];
 
-$order = new Order(0, $id_user, "Natã", "RUA A", "95043200", "1");
+$order = new Order(0, $id_user, $name_user, $street , $cep, "1");
 
 
 $dao = $factory->getOrderDao();
@@ -35,8 +35,6 @@ $createOrder = $dao->Create($order);
             
             if($stock)
             {
-                var_dump($stock);
-
                 $quantidadeAtual = $stock["quantity"] -  $value["quantidade"];
 
                 $stockModel = new ProductStock($key , $quantidadeAtual, $value["preco"]);
@@ -48,6 +46,10 @@ $createOrder = $dao->Create($order);
           
        if(isset($_SESSION["carrinho"])) {
         unset($_SESSION["carrinho"]);
+
+        $response = array("sucesso"=> true);
+
+        echo json_encode($response);
     }
     }
 

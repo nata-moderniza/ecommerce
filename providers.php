@@ -6,38 +6,13 @@ include_once "checkPermission.php"
 ?>
 <section>
 
-    <div class="container mt-3">
+  <div class="container mt-3">
 
-        <div class="">
-            <h5 class="card-title"> Fornecedores</h5>
-            <form method="get">
-                <div class="row">
-                    <div class="col-sm-4">
-                        <div class="form-group">
-                            <label>Nome</label>
-                            <input type="text" name="name"  class="form-control" value="<?php echo isset($_REQUEST['name']) ? $_REQUEST['name'] : '' ?>">
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="form-group">
-                            <label>Código</label>
-                            <input  name="id" class="form-control" value="<?php echo isset($_REQUEST['id']) ? $_REQUEST['id'] : '' ?>">
-                        </div>
-                    </div>
-                    <div class="col-sm-2">
-                        <div class="form-group">
-                            <label>&nbsp;</label>
-                            <div>
-                                <button type="submit" name="submit" value="search" id="submit" class="btn btn-primary"><i class="fa fa-fw fa-search"></i> Pesquisar</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-            </form>
-        </div>
+    <div class="">
+      <h5 class="card-title"> Fornecedores</h5>
+    </div>
 
-        <?php
+    <?php
 
         $dao = $factory->getProviderDao();
         $providers = $dao->getProviders();
@@ -80,7 +55,7 @@ include_once "checkPermission.php"
 
 
         ?>
-    </div>
+  </div>
 
 </section>
 <?php

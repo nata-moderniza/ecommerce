@@ -206,13 +206,11 @@ include_once "interface.php";
         data: payload,
         dataType: 'json',
         success: function (data) {
-          if (data.code == 200){
-        alert("Success: " +data.msg);
-        //ou uma forma de ver todo conteúdo do retorno é
-        console.log(data);
-        //ou apenas o conteúdo do elemento msg
-        console.log(data.msg);
-    } 
+
+          if(data.sucesso)
+            window.location.href = "http://localhost/ecommerce/orders.php";
+
+         console.log(data)
         },
         error: function (response) {
           console.log("response",response) 

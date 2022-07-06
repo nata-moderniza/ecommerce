@@ -78,7 +78,7 @@ class PostgresProductDao extends PostgresDAO implements ProductDAO
   public function updateById($product)
   {
     $query = "UPDATE " . $this->table_name .
-      " SET name = :name, description = :description, id_provider = :id_provider" .
+      " SET name = :name, description = :description, id_provider = :id_provider, path_imagem = :path_imagem" .
       " WHERE id_product = :id_product";
 
     $stmt = $this->conn->prepare($query);
@@ -88,7 +88,7 @@ class PostgresProductDao extends PostgresDAO implements ProductDAO
     $stmt->bindValue(":description", $product->getDescription());
     $stmt->bindValue(':id_provider', $product->getProvider());
     $stmt->bindValue(':id_product', $product->getId());
-
+    $stmt->bindValue(':path_imagem', $product->getImagem());
 
     // execute the query
     if ($stmt->execute()) {
@@ -109,15 +109,12 @@ class PostgresProductDao extends PostgresDAO implements ProductDAO
 
       if(isset($name) && $name != '')
       {
-        $query = $query. "AND product.name like(%:name_product%) ";
+        $query = $query. "AND product.name like '%$name%' ";
       }
 
       $query = $query. "ORDER BY product.id_product ASC";
 
     $stmt = $this->conn->prepare($query);
-    if(isset($name) && $name != '')
-    $stmt->bindValue(':name_product', $name);  
-
     $stmt->execute();
 
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {

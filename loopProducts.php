@@ -8,20 +8,29 @@ include_once "interface.php"
 
       <?php
 
+        $name = @$_GET["name"];
+
         $dao = $factory->getProductDao();
-        $products = $dao->getProductsLoop('');
+        $products = $dao->getProductsLoop($name);
         echo "<div class='row'>";  
           foreach ($products as $product) {
             
-            $caminhoImagem = "http://localhost/ecommerce". $product['path_imagem'];
-               
+            $caminhoImagem =  $product['path_imagem'];
+            
+            $urlImg = "https://dummyimage.com/600x400/55595c/fff";
+            
+            if($caminhoImagem !== '')
+            {
+              $urlImg = "http://localhost/ecommerce". $caminhoImagem;
+            }
+                 
             echo "<div class='col-md-4'>";
             echo  "<div class='card mb-4 box-shadow'>";
             echo  "<div class='card-header'>";
             echo  "<h4 class='my-0 font-weight-normal'>{$product['name']}</h4>";
             echo  "</div>";
             echo  "<div class='card-body'>";
-            echo  "<img class='img-fluid border-0' src='{$caminhoImagem}' alt='Card image cap'>";
+            echo  "<img class='img-fluid border-0' src='{$urlImg}' alt='Card image cap'>";
             echo  "<h3 class='card-title pricing-card-title'>R$ {$product['price']}</h3>";
             echo  "<ul class='list-unstyled mt-3 mb-4'>";
             if($product['quantity'] > 0)

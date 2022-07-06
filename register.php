@@ -54,7 +54,7 @@ include_once "header.php";
       placeholder="Confirmação de Senha">
     <label id="lbl-senha" class="text-danger"></label>
     </div>
-    <button id="btn-login" class="btn btn-lg btn-primary btn-block" type="submit">Entrar</button>
+    <button id="btn-login" class="btn btn-lg btn-primary btn-block" type="submit">Registrar</button>
 
   </form>
 </body>
@@ -143,16 +143,20 @@ include_once "header.php";
         data: {id: 0, name:nome, email: email, role: "user",password: senha },
         dataType: 'json',
         success: function (data) {
-          if (data.code == 200){
-        alert("Success: " +data.msg);
-        //ou uma forma de ver todo conteúdo do retorno é
-        console.log(data);
-        //ou apenas o conteúdo do elemento msg
-        console.log(data.msg);
-    } 
         },
         error: function (response) {
-          console.log("response",response) 
+          $.ajax({
+        url: 'http://localhost/ecommerce/handleLogin.php',
+        method: 'POST',
+        data: {email: email, senha:senha},
+        dataType: 'json',
+        success: function (data) { 
+          window.location.href = "http://localhost/ecommerce/index.php";
+        },
+        error: function (response) {
+          window.location.href = "http://localhost/ecommerce/index.php";
+       }
+    })
        }
     })
  })   

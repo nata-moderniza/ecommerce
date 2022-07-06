@@ -112,19 +112,19 @@ include_once "interface.php";
           cols += `<td>${item.nome_cliente}</td>`;
           cols += `<td>${item.street}</td>`;
           cols += `<td>${item.zipcode}</td>`;
-          cols += `<td>${item.situation}</td>`;
+          cols += `<td>${item.situation === '1'? "Pago": "Aguardando"}</td>`;
           cols += `<td>R$ ${item.price_total}</td>`;
           cols +=
             `<td><a style="cursor: pointer;" 
             onClick=viewDetails(${item.id_order})
              class='text-primary'><i class='fa fa-fw fa-edit'></i> Detalhes</a>
-             <a href='handleDeleteProvider.php?id={$product['id_product']}}' class='text-danger' >
-             <i class='fa fa-fw fa-trash'></i> Cancelar</a>
-             <a href='handleDeleteProvider.php?id={$product['id_product']}}' class='text-danger' >
-             <i class='fa fa-fw fa-trash'></i> Entregar</a>
-
              </td>`;
 
+
+          //  <a href='handleDeleteProvider.php?id={$product['id_product']}}' class='text-danger' >
+          //  <i class='fa fa-fw fa-trash'></i> Cancelar</a>
+          //  <a href='handleDeleteProvider.php?id={$product['id_product']}}' class='text-danger' >
+          //  <i class='fa fa-fw fa-trash'></i> Entregar</a>
 
           newRow.append(cols);
           $("#tabela-pedidos").append(newRow);
@@ -179,6 +179,7 @@ include_once "interface.php";
               if (response.length > 0) {
                 var total = 0
                 response.forEach((item) => {
+                  console.log(item)
 
                   total = parseFloat(total) + parseFloat(item.price_total)
 

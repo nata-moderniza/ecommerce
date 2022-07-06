@@ -48,7 +48,7 @@ include_once "header.php";
     <label for="inputPassword" class="sr-only">Senha</label>
     <input type="password" id="input-senha-login" class="form-control mt-3" name="senha" placeholder="Senha">
     <div class="checkbox mb-3">
-      <a href="register.php">
+      <a style="cursor: pointer;" href="register.php">
         <label>
           Registrar-se
         </label>
